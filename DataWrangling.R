@@ -79,6 +79,6 @@ for(i in 1:1){
 SpecificIPOs<-inner_join(SpecificIPOs, AddedCharacteristics, by="Symbol")
 
 #Might Need to Change Out Path Depending On Who is Coding
-out_path<-"/Users/zachostrow/Desktop/git/Shiny-MoneyMovers"
-write_csv(SpecificIPOs, paste0(out_path, "/SpecificIPOs.csv"))
-write_csv(FilteredIPOs, paste0(out_path, "/FilteredIPOs.csv"))
+out_path<-"/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
+write_csv(StockPrices, paste0(out_path, "/StockDetails.csv"))
+write_csv(RandomIPOs, paste0(out_path, "/IPOList.csv"))
