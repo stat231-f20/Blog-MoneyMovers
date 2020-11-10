@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align="center")
 library(tidyverse)
 ```
 
-# Header 1
+# Will is Cool
 
 ## Header 2
 
