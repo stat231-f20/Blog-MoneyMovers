@@ -1,5 +1,5 @@
 ---
-title: "Your Project Title Here"
+title: "IPO Analysis"
 author: "Your Names Here"
 date: "Add a date"
 output:
