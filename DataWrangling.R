@@ -1,5 +1,6 @@
 library(tidyverse) 
 library(rvest)
+library(RSelenium)
 
 
 #Full Data Can be Found in Git Repo, May Need to Adjust Path for it to work
@@ -48,7 +49,7 @@ FilteredIPOs<-AllIPOs%>%
 
 
 ####POSSIBLY COULD CHOOSE RANDOM 200
-set.seed(100)
+set.seed(95)
 RandomIPOs<-FilteredIPOs[sample(nrow(FilteredIPOs), 200), ]
 ChosenIPOs<-RandomIPOs
 
@@ -59,24 +60,40 @@ colnames(StockPrices)<- c("Date","Open","High","Low","Close*",
                           "Volume","Stock")
 
 #For Loop to Webscrape, then add webscraped data to Added Characteristics
-for(i in 1:1){
+for(i in 1:10){
   url<-paste("https://finance.yahoo.com/quote/",ChosenIPOs$Symbol[i],
              "/history?p=",ChosenIPOs$Symbol[i], sep="")
+  stock_data <- tryCatch(
+    # This is what I want to do...
+    { 
+      (url %>%               
+         read_html() %>%
+         html_nodes("table")%>%   
+         html_table() %>%
+         .[[1]]%>%
+         mutate(Stock=ChosenIPOs$Symbol[i])%>%
+         select(-`Adj Close**`))
+    }
+    # ... but if an error occurs, set to Missing and keep going 
+    , error=function(error_message) {
+      print("Missing")
+    }
+  ) 
+
   
-  tables<-url%>%
-    read_html()%>%
-    html_nodes("table")
-  tables<-html_table(tables[[1]])
-  
-  IPOStockInfo<-tables%>%
-    mutate(Stock=ChosenIPOs$Symbol[i])%>%
-    select(-`Adj Close**`)
+  #IPOStockInfo<-stock_data%>%
+   # mutate(Stock=ChosenIPOs$Symbol[i])%>%
+    #select(-`Adj Close**`)
   StockPrices<-rbind(StockPrices, IPOStockInfo)
   
 }
+IPOStockInfo<-stock_data%>%
+  mutate(Stock=ChosenIPOs$Symbol[i])%>%
+  select(-`Adj Close**`)%>%
+  filter(Date!="*Close price adjusted for splits.**Adjusted close price adjusted for both dividends and splits.")%>%
+  filter(!str_detect(Open, "Dividend"))
 
 #Added New Data to Specific IPOs
-SpecificIPOs<-inner_join(SpecificIPOs, AddedCharacteristics, by="Symbol")
 
 #Might Need to Change Out Path Depending On Who is Coding
 out_path<-"/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
