@@ -4,9 +4,8 @@ library(rvest)
 
 #Full Data Can be Found in Git Repo, May Need to Adjust Path for it to work
 #For a different User
-path_in <- "/Users/zachostrow/Desktop/git/Shiny-MoneyMovers"
-IPOData <- read_csv(paste0(path_in,"/IPODataFull.csv"))
-
+path_in <- "/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
+IPOData <- read_csv(paste0(path_in,"/IPOFullData.csv"))
 #Creating and Selecting the desired Columns
 AllIPOs<-IPOData%>%
   mutate(closeDay_Mean = rowMeans(select(IPOData, starts_with("closeDay")), 
@@ -47,38 +46,32 @@ FilteredIPOs<-AllIPOs%>%
 #stock for other graphs, we instead chose to keep those rows that contain these 
 #NA's, rather than lose the other data found in the rest of the row
 
-#Specific 10 IPOs We Want to Focus On, Getting Current Data
-IPONames<-c("FB","COTY","EBAY","DB","BCS","KDP","DBX", "DAL","CCL","UBS","AMZN",
-            "ANF","CRM","DG")
-SpecificIPOs<-AllIPOs%>%
-  filter(Symbol %in% IPONames)
+
+####POSSIBLY COULD CHOOSE RANDOM 200
+set.seed(100)
+RandomIPOs<-FilteredIPOs[sample(nrow(FilteredIPOs), 200), ]
+ChosenIPOs<-RandomIPOs
 
 #Data Frame which helps make transporting data easier
-AddedCharacteristics<-data.frame(matrix(ncol = 7, nrow = 0))
-colnames(AddedCharacteristics)<- c("CurrentOpen","CurrentHigh",
-                                   "CurrentLow","CurrentClose","CurrentAdjClose",
-                                   "CurrentVolume","Symbol")
+#####ASK HOW TO ADD CERTAIN POINTS IN THE MOST EFFICIENT WAY
+StockPrices<-data.frame(matrix(ncol = 7, nrow = 0))
+colnames(StockPrices)<- c("Date","Open","High","Low","Close*",
+                          "Volume","Stock")
 
 #For Loop to Webscrape, then add webscraped data to Added Characteristics
-for(i in 1:10){
-  url<-paste("https://finance.yahoo.com/quote/",SpecificIPOs$Symbol[i],
-             "/history?p=",SpecificIPOs$Symbol[i], sep="")
+for(i in 1:1){
+  url<-paste("https://finance.yahoo.com/quote/",ChosenIPOs$Symbol[i],
+             "/history?p=",ChosenIPOs$Symbol[i], sep="")
   
   tables<-url%>%
     read_html()%>%
     html_nodes("table")
   tables<-html_table(tables[[1]])
   
-  PresentDay<-tables[1,]%>%
-    rename(CurrentOpen=Open,
-           CurrentHigh=High,
-           CurrentLow=Low,
-           CurrentClose=`Close*`,
-           CurrentAdjClose=`Adj Close**`,
-           CurrentVolume=Volume) %>%
-    mutate(Symbol=SpecificIPOs$Symbol[i])%>%
-    select(-Date)
-  AddedCharacteristics<-rbind(AddedCharacteristics, PresentDay)
+  IPOStockInfo<-tables%>%
+    mutate(Stock=ChosenIPOs$Symbol[i])%>%
+    select(-`Adj Close**`)
+  StockPrices<-rbind(StockPrices, IPOStockInfo)
   
 }
 
