@@ -60,7 +60,7 @@ colnames(StockPrices)<- c("Date","Open","High","Low","Close*",
                           "Volume","Stock")
 
 #For Loop to Webscrape, then add webscraped data to Added Characteristics
-for(i in 1:10){
+for(i in 1:15){
   url<-paste("https://finance.yahoo.com/quote/",ChosenIPOs$Symbol[i],
              "/history?p=",ChosenIPOs$Symbol[i], sep="")
   stock_data <- tryCatch(
@@ -84,12 +84,10 @@ for(i in 1:10){
   #IPOStockInfo<-stock_data%>%
    # mutate(Stock=ChosenIPOs$Symbol[i])%>%
     #select(-`Adj Close**`)
-  StockPrices<-rbind(StockPrices, IPOStockInfo)
+  StockPrices<-rbind(StockPrices, stock_data)
   
 }
-IPOStockInfo<-stock_data%>%
-  mutate(Stock=ChosenIPOs$Symbol[i])%>%
-  select(-`Adj Close**`)%>%
+CleanStocks<-StockPrices%>%
   filter(Date!="*Close price adjusted for splits.**Adjusted close price adjusted for both dividends and splits.")%>%
   filter(!str_detect(Open, "Dividend"))
 
@@ -97,5 +95,5 @@ IPOStockInfo<-stock_data%>%
 
 #Might Need to Change Out Path Depending On Who is Coding
 out_path<-"/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
-write_csv(StockPrices, paste0(out_path, "/StockDetails.csv"))
+write_csv(CleanStocks, paste0(out_path, "/StockDetails.csv"))
 write_csv(RandomIPOs, paste0(out_path, "/IPOList.csv"))
