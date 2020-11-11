@@ -5,7 +5,7 @@ library(RSelenium)
 
 #Full Data Can be Found in Git Repo, May Need to Adjust Path for it to work
 #For a different User
-path_in <- "/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
+path_in <- "/Users/luwil/OneDrive/Desktop/Blog-MoneyMovers"
 IPOData <- read_csv(paste0(path_in,"/IPOFullData.csv"))
 #Creating and Selecting the desired Columns
 AllIPOs<-IPOData%>%
@@ -81,15 +81,21 @@ for(i in 1:15){
   ) 
 
   
-  #IPOStockInfo<-stock_data%>%
-   # mutate(Stock=ChosenIPOs$Symbol[i])%>%
-    #select(-`Adj Close**`)
+  IPOStockInfo<-stock_data%>%
+    mutate(Stock=ChosenIPOs$Symbol[i])%>%
+    select(-`Adj Close**`)
   StockPrices<-rbind(StockPrices, stock_data)
   
 }
+
+
 CleanStocks<-StockPrices%>%
   filter(Date!="*Close price adjusted for splits.**Adjusted close price adjusted for both dividends and splits.")%>%
   filter(!str_detect(Open, "Dividend"))
+
+stock_data1 <- stock_data %>%
+  gather(key = sex, value = Total, M, F) %>%
+  select(-ratio)
 
 #Added New Data to Specific IPOs
 
@@ -97,3 +103,4 @@ CleanStocks<-StockPrices%>%
 out_path<-"/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
 write_csv(CleanStocks, paste0(out_path, "/StockDetails.csv"))
 write_csv(RandomIPOs, paste0(out_path, "/IPOList.csv"))
+
