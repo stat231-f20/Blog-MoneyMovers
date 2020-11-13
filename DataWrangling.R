@@ -56,11 +56,11 @@ ChosenIPOs<-RandomIPOs
 #Data Frame which helps make transporting data easier
 #####ASK HOW TO ADD CERTAIN POINTS IN THE MOST EFFICIENT WAY
 StockPrices<-data.frame(matrix(ncol = 7, nrow = 0))
-colnames(StockPrices)<- c("Date","Open","High","Low","Close*",
+colnames(StockPrices)<- c("Date","High","Low",
                           "Volume","Stock")
 
 #For Loop to Webscrape, then add webscraped data to Added Characteristics
-for(i in 1:15){
+for(i in 1:200){
   url<-paste("https://finance.yahoo.com/quote/",ChosenIPOs$Symbol[i],
              "/history?p=",ChosenIPOs$Symbol[i], sep="")
   stock_data <- tryCatch(
@@ -72,7 +72,7 @@ for(i in 1:15){
          html_table() %>%
          .[[1]])%>%
         mutate(Stock=ChosenIPOs$Symbol[i])%>%
-        select(-`Adj Close**`)
+        select(-`Adj Close**`,-`Open`,-`Close*`)
     }
     # ... but if an error occurs, set to Missing and keep going 
     , error=function(error_message) {
@@ -88,7 +88,7 @@ for(i in 1:15){
 
 CleanStocks<-StockPrices%>%
   filter(Date!="*Close price adjusted for splits.**Adjusted close price adjusted for both dividends and splits.")%>%
-  filter(!str_detect(Open, "Dividend"))
+  filter(!str_detect(High, "Dividend"))
 
 stock_data1 <- CleanStocks %>%
   gather(key = HighLow, value = Volume, High, Low)%>%
@@ -98,6 +98,6 @@ stock_data1 <- CleanStocks %>%
 
 #Might Need to Change Out Path Depending On Who is Coding
 out_path<-"/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
-write_csv(CleanStocks, paste0(out_path, "/StockDetails.csv"))
+write_csv(stock_data1, paste0(out_path, "/StockDetails.csv"))
 write_csv(RandomIPOs, paste0(out_path, "/IPOList.csv"))
 
