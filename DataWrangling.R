@@ -99,5 +99,5 @@ stock_data1 <- CleanStocks %>%
 #Might Need to Change Out Path Depending On Who is Coding
 out_path<-"/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
 write_csv(stock_data1, paste0(out_path, "/StockDetails.csv"))
-write_csv(RandomIPOs, paste0(out_path, "/IPOList.csv"))
+write_csv(FilteredIPOs, paste0(out_path, "/IPOList.csv"))
 
