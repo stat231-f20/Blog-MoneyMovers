@@ -131,24 +131,6 @@ IPOHist <- IPO %>%
 #Creating Abbreviations of the Month
 IPOHist$Month <- month.abb[IPOHist$Month]
 
-#Scatterplot
-#Choosing the X Variables for the Select Inputs and Naming Them Accordingly
-x_choices <- as.list(names(IPO)[c(2, 15:17)])
-x_choices_names <- c("# Days Better than S&P"
-                     ,"Revenue ($)"
-                     ,"Net Income ($)"
-                     ,"# of Employees")
-names(x_choices) <- x_choices_names
-
-#Choosing the Y Variables for the Select Inputs and Naming Them Accordingly
-y_choices<-as.list(names(IPO)[c(3, 11, 7:10)])
-y_choice_names <- c("# Days That Have Profit"
-                    ,"MarketCap($)"
-                    ,"Close Day Mean ($)"
-                    ,"High Day Mean ($)"
-                    ,"Open Day Mean ($)"
-                    ,"Low Day Mean ($)")
-names(y_choices)<-y_choice_names
 
 #Histogram
 categories <- as.list(names(IPOHist)[c(12, 19, 5:6)])
@@ -173,22 +155,22 @@ ui <- fluidPage(
                   label = "Choose a Category Variable of Interest:", 
                   choices = categories, 
                   selected = "Sector"),
-      selectInput(inputId = "line"
-                  , label = "Choose an IPO:"
-                  , choices = c("All", line_choices)
-                  , selected = "All"),
       selectInput(inputId = "div"
                   , label = "Include Sectors:"
                   , choices = c("All", div_choices)
-                  , selected = "All")
+                  , selected = "All"),
+      selectInput(inputId = "line"
+                  , label = "Choose an IPO (For Stock Trend Line):"
+                  , choices = (line_choices)
+                  , selected = "ACIA")
     ),
     
     #Naming the different tabs
     mainPanel(
       tabsetPanel(type = "tabs",
                   tabPanel("Bar Graph", plotOutput(outputId = "barG")),
-                  tabPanel("Stock Trends", plotOutput(outputId = "line")),
-                  tabPanel("Table", tableOutput(outputId = "table"))))
+                  tabPanel("Stock Trends", plotOutput(outputId = "Line")),
+                  tabPanel("SpatialMap", tableOutput(outputId = "Map"))))
   )
 )
 
@@ -198,29 +180,8 @@ ui <- fluidPage(
 #sector to ensure that that sector is the only one in the scatterplot
 server <- function(input,output){
   
-  use_data <- reactive({
-    data<-StockData
-    req(input$div)
-    if(input$div!="All"){
-      data<-data%>%
-        filter(Sector==input$div)
-    }else{
-      data<-data
-    }
-  })
-  #Use data 2 does same thing but with different dataset for table 
-  use_data2 <- reactive({
-    data<-SpecificIPOData
-    req(input$div)
-    if(input$div!="All"){
-      data<-data%>%
-        filter(Sector==input$div)
-    }else{
-      data<-data
-    }
-  })
   #Use data 2 does same thing but with different dataset for bar graphs 
-  use_data3 <- reactive({
+  use_data <- reactive({
     data<-IPOHist
     req(input$div)
     if(input$div!="All"){
@@ -233,7 +194,7 @@ server <- function(input,output){
   
   #Creating a bar graph dependent on the predictor variable input  
   output$barG <- renderPlot({
-    ggplot(data = use_data3(), aes_string(x = input$hist, fill = input$hist)) +
+    ggplot(data = use_data(), aes_string(x = input$hist, fill = input$hist)) +
       geom_bar() +
       labs(x = categoryNames[categories == input$hist], 
            y = "Count") +
@@ -242,8 +203,8 @@ server <- function(input,output){
   })
   
   #Creating a scatterplot depending on the predictor and response varaible input  
-  output$line <- renderPlot({
-    ggplot(data = use_data(), aes(x = Date, y = Volume, color=HighLow)) +
+  output$Line <- renderPlot({
+    ggplot(data = StockData, aes(x = line$Date, y = line$Volume, color=input$HighLow)) +
       geom_line() +
       labs(x = "Date"
            , y = "Price of IPO Stock")
@@ -252,11 +213,6 @@ server <- function(input,output){
   #Creating a table that uses the 10 specific interested stocks
   #In addition to response and predictor variable inputs, also gives info on
   #Name, symbol, sector, and other present day info that was webscraped
-  output$table <- renderTable({
-    dplyr::select(use_data2(), Symbol,Name,Sector, CurrentOpen,CurrentHigh,
-                  CurrentClose, CurrentAdjClose, CurrentVolume,
-                  input$x, input$y)
-  })
 }
 
 # call to shinyApp
