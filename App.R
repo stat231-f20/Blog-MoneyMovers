@@ -191,6 +191,10 @@ server <- function(input,output){
       data<-data
     }
   })
+  use_data2 <- reactive({
+    data<-StockData%>%
+      filter(Stock==input$line)
+  })
   
   #Creating a bar graph dependent on the predictor variable input  
   output$barG <- renderPlot({
@@ -204,13 +208,13 @@ server <- function(input,output){
   
   #Creating a scatterplot depending on the predictor and response varaible input  
   output$Line <- renderPlot({
-    ggplot(data = StockData, aes(x = line$Date, y = line$Volume, color=input$HighLow)) +
+    ggplot(data = use_data2(), aes(x = as.Date(Date), y = as.numeric(Volume), color=HighLow)) +
       geom_line() +
       labs(x = "Date"
            , y = "Price of IPO Stock")
   })
   
-  #Creating a table that uses the 10 specific interested stocks
+
   #In addition to response and predictor variable inputs, also gives info on
   #Name, symbol, sector, and other present day info that was webscraped
 }
