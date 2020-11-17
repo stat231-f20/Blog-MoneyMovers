@@ -14,11 +14,13 @@ library(tidyverse)
 ```
  
 # Introduction
--Why should anyone care about this?
--What is this about?
 
+Talk about what is an IPO, why should we care about IPOs etc
 -IPOs are fundamental part of the finance industry
 -IPO=Initial Public Offering
+
+## Goal
+Through our analysis, we hope to examine different characteristics of IPOs and determine whether there are more similar characteristics found in this group of IPOs, which could be helpful to determine if a company has a higher prbability of becoming an IPO. Such characteristics being observed include year the compnay went public, the sector of the company, where the company is mainly located, as well as its current stock trends.
 
 #Data
 -Where did your data come from?

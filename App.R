@@ -9,8 +9,8 @@ library(epitools)
 path_in <- "/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
 
 IPO <- read_csv(paste0(path_in,"/IPOList.csv"))
-StockData<-read_csv(paste0(path_in,"/StockDetails.csv"))
-
+StockData<-read_csv(paste0(path_in,"/StockDetails.csv"))%>%
+  mutate(Date=as.Date(Date, format="%b%d,%Y"))
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -208,7 +208,7 @@ server <- function(input,output){
   
   #Creating a scatterplot depending on the predictor and response varaible input  
   output$Line <- renderPlot({
-    ggplot(data = use_data2(), aes(x = as.Date(Date), y = as.numeric(Volume), color=HighLow)) +
+    ggplot(data = use_data2(), aes(x = Date, y = as.numeric(Volume), color=HighLow)) +
       geom_line() +
       labs(x = "Date"
            , y = "Price of IPO Stock")
