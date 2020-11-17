@@ -1,7 +1,7 @@
 ---
 title: "IPO Analysis"
-author: "Your Names Here"
-date: "Add a date"
+author: "Zach Ostrow and Will Lu"
+date: "11/19/20"
 output:
   rmdformats::readthedown:
     thumbnails: false
@@ -11,9 +11,30 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align="center")
 library(tidyverse)
+library(rmdformats)
 ```
+ 
+# Introduction
+-Why should anyone care about this?
+-What is this about?
 
-# Will is Cool
+-IPOs are fundamental part of the finance industry
+-IPO=Initial Public Offering
+
+#Data
+-Where did your data come from?
+  -kaggle
+-What kind of data is it?
+  -csv +web scraping
+      -csv of basic characteristic of thousands of IPOs
+      -web scraping inlcudes stock prices of 200 randomized of the given IPOs
+-Is there a link to the data
+#Findings
+-
+
+#Limitations
+-Dataset based on data from 2018
+
 
 ## Header 2
 
