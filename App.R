@@ -1,32 +1,18 @@
-#CONTRIBUTIONS OF THE GROUP
-#CCHRIS: Made the original table of 10 specific stocks
-#ZACH: Created the scatterplot, created the filter by a specific spector,
-#Made table more interactive to the user's inputs
-#WILL: Made histogram tab
-
-#--------------------------------------------------------------------------------------------------------------------------------------------------
-
 library(readr)
 library(shinythemes)
 library(tidyverse)
 library(rccdates)
 library(epitools)
-library(fivethirtyeight)
 
 #Loading In the Two Datasets
 
-path_in <- "/Users/zachostrow/Desktop/Git/Shiny-MoneyMovers"
+path_in <- "/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
 
-IPO <- read_csv(paste0(path_in,"/FilteredIPOs.csv"))
-SpecificIPOData<-read_csv(paste0(path_in,"/SpecificIPOs.csv"))
+IPO <- read_csv(paste0(path_in,"/IPOList.csv"))
+StockData<-read_csv(paste0(path_in,"/StockDetails.csv"))
 
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------
-
-#Zach: in order to illustrate Some interesting patterns in the scatterplot, outliers were excluded
-IPOData <- IPO %>%
-  filter(Revenue<300000000000, netIncome>0,netIncome<80000000000,
-         MarketCap<400000000000, employees<300000,closeDay_Mean<10000)
 
 #Will: in order to have a better presentation of the data, I created a new variable called "Region" and categorized that by the state or country
 #the company was based in. I also filtered out the "N/A" data points in the set rather than outliers like in Zach's case, because the bar graph
@@ -147,28 +133,29 @@ IPOHist$Month <- month.abb[IPOHist$Month]
 
 #Scatterplot
 #Choosing the X Variables for the Select Inputs and Naming Them Accordingly
-x_choices <- as.list(names(IPOData)[c(2, 15:17)])
+x_choices <- as.list(names(IPO)[c(2, 15:17)])
 x_choices_names <- c("# Days Better than S&P"
                      ,"Revenue ($)"
                      ,"Net Income ($)"
                      ,"# of Employees")
-names(x_choices_names) <- x_choices_names
+names(x_choices) <- x_choices_names
 
 #Choosing the Y Variables for the Select Inputs and Naming Them Accordingly
-y_choices<-as.list(names(IPOData)[c(3, 11, 7:10)])
+y_choices<-as.list(names(IPO)[c(3, 11, 7:10)])
 y_choice_names <- c("# Days That Have Profit"
                     ,"MarketCap($)"
                     ,"Close Day Mean ($)"
                     ,"High Day Mean ($)"
                     ,"Open Day Mean ($)"
                     ,"Low Day Mean ($)")
-
+names(y_choices)<-y_choice_names
 
 #Histogram
 categories <- as.list(names(IPOHist)[c(12, 19, 5:6)])
 categoryNames <- c("Sector", "Region","Year", "Month")
 names(categoryNames) <- categoryNames
-div_choices <- (unique(IPOData$Sector))
+div_choices <- (unique(IPO$Sector))
+line_choices<-(unique(StockData$Stock))
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 # ui 
@@ -183,17 +170,13 @@ ui <- fluidPage(
     
     sidebarPanel(
       selectInput(inputId = "hist", 
-                  label = "Choose a category variable of interest:", 
+                  label = "Choose a Category Variable of Interest:", 
                   choices = categories, 
                   selected = "Sector"),
-      selectInput(inputId = "x"
-                  , label = "Choose a predictor variable of interest:"
-                  , choices = x_choices
-                  , selected = "Revenue"),
-      selectInput(inputId = "y"
-                  , label = "Choose a outcome variable of interest:"
-                  , choices = y_choices
-                  , selected = "Close Day Mean"),
+      selectInput(inputId = "line"
+                  , label = "Choose an IPO:"
+                  , choices = c("All", line_choices)
+                  , selected = "All"),
       selectInput(inputId = "div"
                   , label = "Include Sectors:"
                   , choices = c("All", div_choices)
@@ -204,7 +187,7 @@ ui <- fluidPage(
     mainPanel(
       tabsetPanel(type = "tabs",
                   tabPanel("Bar Graph", plotOutput(outputId = "barG")),
-                  tabPanel("Scatterplot", plotOutput(outputId = "scatter")),
+                  tabPanel("Stock Trends", plotOutput(outputId = "line")),
                   tabPanel("Table", tableOutput(outputId = "table"))))
   )
 )
@@ -216,7 +199,7 @@ ui <- fluidPage(
 server <- function(input,output){
   
   use_data <- reactive({
-    data<-IPOData
+    data<-StockData
     req(input$div)
     if(input$div!="All"){
       data<-data%>%
@@ -259,11 +242,11 @@ server <- function(input,output){
   })
   
   #Creating a scatterplot depending on the predictor and response varaible input  
-  output$scatter <- renderPlot({
-    ggplot(data = use_data(), aes_string(x = input$x, y = input$y)) +
-      geom_point() +
-      labs(x = x_choices_names[x_choices == input$x]
-           , y = y_choice_names[y_choices == input$y])
+  output$line <- renderPlot({
+    ggplot(data = use_data(), aes(x = Date, y = Volume, color=HighLow)) +
+      geom_line() +
+      labs(x = "Date"
+           , y = "Price of IPO Stock")
   })
   
   #Creating a table that uses the 10 specific interested stocks
