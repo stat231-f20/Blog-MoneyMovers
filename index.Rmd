@@ -12,7 +12,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE, fig.align="center")
 library(tidyverse)
 ```
- 
+![](https://www.pymnts.com/wp-content/uploads/2020/09/IPO-Canada.jpg)
+
 # Introduction
 
 Talk about what is an IPO, why should we care about IPOs etc
@@ -86,10 +87,11 @@ ggplot(data = cars, aes(x = speed, y = dist)) +
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
+<iframe height="600" width="100%" frameborder="no" title="Analysis" src="https://zostrow.shinyapps.io/Blog-MoneyMovers/"> </iframe>
 
 ## Including links and images
 
-You can include [Links](https://www.datadreaming.org/post/r-markdown-theme-gallery/) and images ![team logo](https://raw.githubusercontent.com/stat231-f20/Blog-MoneyMovers/main/images/MoneyMovers.jpg)
+You can include [Links](https://www.datadreaming.org/post/r-markdown-theme-gallery/)
 
 
 # You can even create tabs if you want! {.tabset .tabset-fade .tabset-pills}

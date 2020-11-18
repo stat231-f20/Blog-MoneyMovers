@@ -6,10 +6,9 @@ library(epitools)
 
 #Loading In the Two Datasets
 
-path_in <- "/Users/zachostrow/Desktop/git/Blog-MoneyMovers"
 
-IPO <- read_csv(paste0(path_in,"/IPOList.csv"))
-StockData<-read_csv(paste0(path_in,"/StockDetails.csv"))%>%
+IPO <- read_csv("IPOList.csv")
+StockData<-read_csv("StockDetails.csv")%>%
   mutate(Date=as.Date(Date, format="%b%d,%Y"))
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------
