@@ -16,6 +16,7 @@ library(tidyverse)
 
 # Introduction
 
+The world of finance has a multitude of moving parts that make the industry so interesting and intriguing. 
 Talk about what is an IPO, why should we care about IPOs etc
 -IPOs are fundamental part of the finance industry
 -IPO=Initial Public Offering
@@ -24,6 +25,7 @@ Talk about what is an IPO, why should we care about IPOs etc
 Through our analysis, we hope to examine different characteristics of IPOs and determine whether there are more similar characteristics found in this group of IPOs, which could be helpful to determine if a company has a higher prbability of becoming an IPO. Such characteristics being observed include year the compnay went public, the sector of the company, where the company is mainly located, as well as its current stock trends.
 
 #Data
+Our data comes from two main soruces. We first used a CSV from kaggle which included IPOs from the years 1996 to 2018. The kaggle dataset included many different characteristics of each of the IPOs. These characteristics include and the high and low for the first 261 days of being public.
 -Where did your data come from?
   -kaggle
 -What kind of data is it?
@@ -31,6 +33,13 @@ Through our analysis, we hope to examine different characteristics of IPOs and d
       -csv of basic characteristic of thousands of IPOs
       -web scraping inlcudes stock prices of 200 randomized of the given IPOs
 -Is there a link to the data
+
+**Links to the Data:**
+
+- [Yahoo Finance](https://finance.yahoo.com)
+- item 2
+- item 3
+
 #Findings
 -
 
