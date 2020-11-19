@@ -27,11 +27,11 @@ If the founders, family, and friends of Starbucks didn't make the decision to se
 An IPO is surely a big step for a company; it's the checkpoint that provides greater access to funds (in exchange for parts of the company of course). 
 
 ## Goal
-Through our analysis, we hope to examine certain patterns and consistencies that are apparent with our dataset. We wrangeled data and clustered points included in our csv by certain qualitative factors. 
-For example, with our bar graph, we observed that certain business sectors have been more busy than others since 1996. Analysis like this can be linked with other parts of our App, like the visual map, that gives us a different perspective and allows us to piece the puzzel together. Do certain industries have greater influence in certain US states? Which states have had the most IPO's since 1996? How does that line up with each states' major industrial players?
+Through our analysis, we hope to examine certain patterns and consistencies that are apparent with our dataset. We wrangeled data included in our csv by certain qualitative factors. 
+For example, with our bar graph, we observed that certain business sectors have been more busy than others since 1996. Analysis like this can be linked with other parts of our App, like the visual map, that gives us a different perspective and allows us to piece the puzzle together. Do certain industries have greater influence in certain US states? Which states have had the most IPO's since 1996? How does that line up with each states' major industrial players?
 Other characteristics include IPO date and IPO origin state.
 
-Broadly, those were our questions of interest. On a finer level, we decided to include a line graph on the various different companies to observe their performance in terms of profitability. Examining a stock's high and low prices through its subsequent 261 days of being listed on the public market should provide some useful insight, Namely, is there any telling in what makes a public company successful in the long run? 
+Broadly, those were our questions of interest. On a finer level, we decided to include a line graph on the various different companies to observe their performance in terms of profitability. Examining a stock's high and low prices through its recent listings on the public market should provide some useful insight. Namely, is there any telling in what makes a public company successful in the long run? 
 
 
 # Data
@@ -93,37 +93,3 @@ ggplot(final_data, aes(map_id = state_fullname)) +
 Nevertheless, there are limitations to the analysis that has been done. Firstly, the kaggle dataset that includes the IPOs and their characteristics includes IPOs only from the years 1996-2018. That is, the past 2 years of IPO data is not included
 
 In addition,
-
-
-## Header 2
-
-### Header 3
-
-
-Let's clean up the format of that output:
-
-```{r pretty, echo=FALSE, warning=FALSE, message=FALSE}
-library(kableExtra)
-summary(cars) %>%
-  kable(col.names = c("Speed", "Distance")
-        , row.names = F) %>%
-  kable_styling(bootstrap_options = "striped"
-                , full_width = F) %>%
-  row_spec(0, bold = T, underline = T) %>%
-  column_spec(1:2, width = "1.5in") 
-```
-
-In a study from the 1920s, fifty cars were used to see how the speed of the car and the distance taken to stop were related.  Speeds ranged between `r min(cars$speed)` and `r max(cars$speed)` mph.  Distances taken to stop ranged between `r min(cars$dist)` and `r max(cars$dist)` feet, with the middle 50% falling between `r as.numeric(quantile(cars$dist)[2])` and `r as.numeric(quantile(cars$dist)[4])` feet.  
-
-
-```{r figure1, echo=FALSE}
-ggplot(data = cars, aes(x = speed, y = dist)) + 
-  geom_point() + 
-  labs(x = "Speed of car (mph)"
-       , y = "Distance taken to stop (ft)"
-       , title = "cars data (1920s)")
-```
-
-## Including links and images
-
-You can include [Links](https://www.datadreaming.org/post/r-markdown-theme-gallery/)
