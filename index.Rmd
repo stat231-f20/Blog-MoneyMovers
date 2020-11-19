@@ -21,30 +21,27 @@ Talk about what is an IPO, why should we care about IPOs etc
 -IPOs are fundamental part of the finance industry
 -IPO=Initial Public Offering
 
-## Goal
+# Goal
 Through our analysis, we hope to examine different characteristics of IPOs and determine whether there are more similar characteristics found in this group of IPOs, which could be helpful to determine if a company has a higher prbability of becoming an IPO. Such characteristics being observed include year the compnay went public, the sector of the company, where the company is mainly located, as well as its current stock trends.
 
-#Data
-Our data comes from two main soruces. We first used a CSV from kaggle which included IPOs from the years 1996 to 2018. The kaggle dataset included many different characteristics of each of the IPOs. These characteristics include and the high and low for the first 261 days of being public.
--Where did your data come from?
-  -kaggle
--What kind of data is it?
-  -csv +web scraping
-      -csv of basic characteristic of thousands of IPOs
-      -web scraping inlcudes stock prices of 200 randomized of the given IPOs
--Is there a link to the data
+# Data
+Our data comes from two main soruces. We first used a CSV from kaggle which included IPOs from the years 1996 to 2018. The kaggle dataset included many different characteristics of each of the IPOs. These characteristics include the number of days the company had a profit, when the company went public, the number of days the IPO exceeded the S&P (A way to measure the success of a stock), and the high and low for the company's stock for the first 261 days of being public.
+
+Our second source of data comes from Yahoo Finance. We first selected randomly selected 200 IPOs from the original dataset. Then, for those 200 selected IPOs, we webscraped Yahoo Finance to retrieve the high and low stock prices of the stock each day for the past couple months. 
+
+Links to the data sources can be found below.
 
 **Links to the Data:**
 
 - [Yahoo Finance](https://finance.yahoo.com)
-- item 2
-- item 3
+- [Kaggle Dataset](https://www.kaggle.com/proselotis/financial-ipo-data)
 
 #Findings
 -
 
-#Limitations
--Dataset based on data from 2018
+# Limitations
+
+While the analysis highlights cer
 
 
 ## Header 2
