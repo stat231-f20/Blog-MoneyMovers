@@ -4,18 +4,29 @@ library(tidyverse)
 library(rccdates)
 library(epitools)
 
+
 #Loading In the Two Datasets
-
-
 IPO <- read_csv("IPOList.csv")
 StockData<-read_csv("StockDetails.csv")%>%
   mutate(Date=as.Date(Date, format="%b%d,%Y"))
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------
 
-#Will: in order to have a better presentation of the data, I created a new variable called "Region" and categorized that by the state or country
-#the company was based in. I also filtered out the "N/A" data points in the set rather than outliers like in Zach's case, because the bar graph
-#is looking at one qualitative variable rather than something quantitative like Revenue or Net Income.
+#Creating vectors of all the different regions
+Countires<-c("Canada","China","Switzerland","Brazil","Belgium","Bermuda","Ireland",
+             "Israel","Sweden","Sweden","Mexico","the United Arab Emirates",
+             "Uruguay", "Greece","the Netherlands","Colombia","Denmark","Taiwan",
+             "India","Chile","Argentina","Australia","Puerto Rico","Indonesia",
+             "Netherlands","France","South Africa","Cayman Islands","Germany",
+             "Japan","Monaco","Peru","South Korea","Spain","Marshall Islands",
+             "Cyprus","the United Kingdom","United Kingdom","Norway","the Bahamas",
+             "Russia","Turkey","The Netherlands","US Virgin Islands")
+West<-c("CA","OR","WA","ID","UT","AZ","NV","MT","WY","CO","NM")
+Midwest<-c("ND","SD","NE","MN","WI","KS","MO","IL","IA","MI","OH","IN")
+South<-c("TX","OK","AR","LA","MS","AL","TN","KY","WV","GA","FL","NC","VA","MD","DE","DC","SC")
+Northeast<-c("PA","NY","VT","NH","ME","MA","CT","NJ","RI")
+
+#Filtering histogram, organizing into regions and getting rid of missing data
 IPOHist <- IPO %>%
   filter(stateCountry != "NYArconic") %>%
   filter(stateCountry != "N/A") %>%
@@ -25,117 +36,26 @@ IPOHist <- IPO %>%
   filter(Industry != "N/A") %>%
   filter(Revenue != "N/A") %>%
   mutate(Year = as.character(Year), 
-         Region = ifelse(stateCountry == "Canada" |
-                           stateCountry == "China" |
-                           stateCountry == "Switzerland" |
-                           stateCountry == "Brazil" |
-                           stateCountry == "Belgium" |
-                           stateCountry == "Bermuda" |
-                           stateCountry == "Ireland" |
-                           stateCountry == "Israel" |
-                           stateCountry == "Sweden" |
-                           stateCountry == "Mexico" |
-                           stateCountry == "the United Arab Emirates" |
-                           stateCountry == "Uruguay" |
-                           stateCountry == "Greece" |
-                           stateCountry == "the Netherlands" |
-                           stateCountry == "Colombia" |
-                           stateCountry == "Denmark" |
-                           stateCountry == "Taiwan" |
-                           stateCountry == "India" |
-                           stateCountry == "Chile" |
-                           stateCountry == "Argentina" |
-                           stateCountry == "Australia" |
-                           stateCountry == "Puerto Rico" |
-                           stateCountry == "Indonesia" |
-                           stateCountry == "Netherlands" |
-                           stateCountry == "France" |
-                           stateCountry == "South Africa" |
-                           stateCountry == "Cayman Islands" |
-                           stateCountry == "Germany" |
-                           stateCountry == "Japan" |
-                           stateCountry == "Monaco" |
-                           stateCountry == "Peru" |
-                           stateCountry =="South Korea" |
-                           stateCountry == "Spain" |
-                           stateCountry == "Marshall Islands" |
-                           stateCountry == "Cyprus" |
-                           stateCountry == "the United Kingdom" |
-                           stateCountry == "United Kingdom" |
-                           stateCountry == "Norway" |
-                           stateCountry == "the Bahamas" |
-                           stateCountry == "Russia" |
-                           stateCountry == "Turkey" |
-                           stateCountry == "The Netherlands" |
-                           stateCountry == "US Virgin Islands",
-                         "International",
-                         ifelse(stateCountry == "CA" |
-                                  stateCountry == "OR" |
-                                  stateCountry == "WA" |
-                                  stateCountry == "ID" |
-                                  stateCountry == "UT" |
-                                  stateCountry == "AZ" |
-                                  stateCountry == "NV" |
-                                  stateCountry == "MT" |
-                                  stateCountry == "WY" |
-                                  stateCountry == "CO" |
-                                  stateCountry == "NM",
-                                "West",
-                                ifelse(stateCountry == "ND" |
-                                         stateCountry == "SD" |
-                                         stateCountry == "NE" |
-                                         stateCountry == "MN" |
-                                         stateCountry == "WI" |
-                                         stateCountry == "KS" |
-                                         stateCountry == "MO" |
-                                         stateCountry == "IL" |
-                                         stateCountry == "IA" |
-                                         stateCountry == "MI" |
-                                         stateCountry == "OH" |
-                                         stateCountry == "IN",
-                                       "Midwest",
-                                       ifelse(stateCountry == "TX" |
-                                                stateCountry == "OK" |
-                                                stateCountry == "AR" |
-                                                stateCountry == "LA" |
-                                                stateCountry == "MS" |
-                                                stateCountry == "AL" |
-                                                stateCountry == "TN" |
-                                                stateCountry == "KY" |
-                                                stateCountry == "WV" |
-                                                stateCountry == "GA" |
-                                                stateCountry == "FL" |
-                                                stateCountry == "NC" |
-                                                stateCountry == "VA" |
-                                                stateCountry == "MD" |
-                                                stateCountry == "DE" |
-                                                stateCountry == "DC" |
-                                                stateCountry == "SC",
-                                              "South",
-                                              ifelse(stateCountry == "PA" |
-                                                       stateCountry == "NY" |
-                                                       stateCountry == "VT" |
-                                                       stateCountry == "NH" |
-                                                       stateCountry == "ME" |
-                                                       stateCountry == "MA" |
-                                                       stateCountry == "CT" |
-                                                       stateCountry == "NJ" |
-                                                       stateCountry == "RI",
-                                                     "Northeast", 0)
-                                       )
-                                )
-                         )
-         )
-  )
+         Region = ifelse(stateCountry %in% Countries, "International",
+                         ifelse(stateCountry %in% West, "West",
+                                ifelse(stateCountry %in% Midwest, "Midwest",
+                                       ifelse(stateCountry %in% South,"South",
+                                              ifelse(stateCountry %in% Northeast, "Northeast",0))))))
+                            
+                          
 #Creating Abbreviations of the Month
 IPOHist$Month <- month.abb[IPOHist$Month]
 
 
-#Histogram
+#Histogram Variables Chosen
 categories <- as.list(names(IPOHist)[c(12, 19, 5:6)])
 categoryNames <- c("Sector", "Region","Year", "Month")
 names(categoryNames) <- categoryNames
+
+#Sector filter
 div_choices <- (unique(IPO$Sector))
+
+#List of all stocks for trend line
 line_choices<-(unique(StockData$Stock))
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
@@ -145,8 +65,8 @@ ui <- fluidPage(
   
   h1("Analysis of IPOs"),
   
-  #Three SelectInputs: One for predictor variable, one for response variable,
-  #and One for Choosing which sectors to include
+  #Three SelectInputs: One for Variable of Interest for Bar Graph, 
+  #one for filtering based on sector, and one for choosing which stock for trend line
   sidebarLayout(
     
     sidebarPanel(
@@ -178,7 +98,6 @@ ui <- fluidPage(
 #sector to ensure that that sector is the only one in the scatterplot
 server <- function(input,output){
   
-  #Use data 2 does same thing but with different dataset for bar graphs 
   use_data <- reactive({
     data<-IPOHist
     req(input$div)
@@ -189,6 +108,7 @@ server <- function(input,output){
       data<-data
     }
   })
+  #Use high and lows dependent on slected stock
   use_data2 <- reactive({
     data<-StockData%>%
       filter(Stock==input$line)
@@ -204,7 +124,7 @@ server <- function(input,output){
       coord_flip()
   })
   
-  #Creating a scatterplot depending on the predictor and response varaible input  
+  #Creating a time series of the Date and price of the stock  
   output$Line <- renderPlot({
     ggplot(data = use_data2(), aes(x = Date, y = as.numeric(Volume), color=HighLow)) +
       geom_line() +
@@ -212,9 +132,6 @@ server <- function(input,output){
            , y = "Price of IPO Stock")
   })
   
-
-  #In addition to response and predictor variable inputs, also gives info on
-  #Name, symbol, sector, and other present day info that was webscraped
 }
 
 # call to shinyApp
