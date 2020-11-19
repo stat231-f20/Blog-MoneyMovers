@@ -61,11 +61,11 @@ You should test out updating your GitHub Pages website:
 - commit and push BOTH the `index.Rmd` and the `index.html` files
 - go to https://stat231-f20.github.io/Blog-MoneyMovers to see the published test document (this is publicly available!)
 
-## Including code and plots
+## Map of the Distribution of Location of IPOs
 
 You can embed code as normal, for example:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 IPO <- read_csv("IPOList.csv")
 
 usa_states <- map_data(map = "state", region = ".") 
