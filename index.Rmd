@@ -27,9 +27,11 @@ If the founders, family, and friends of Starbucks didn't make the decision to se
 An IPO is surely a big step for a company; it's the checkpoint that provides greater access to funds (in exchange for parts of the company of course). 
 
 ## Goal
-Through our analysis, we hope to examine certain patterns and consistencies that are apparent with our dataset. 
+Through our analysis, we hope to examine certain patterns and consistencies that are apparent with our dataset. We wrangeled data and clustered points included in our csv by certain qualitative factors. 
+For example, with our bar graph, we observed that certain business sectors have been more busy than others since 1996. Analysis like this can be linked with other parts of our App, like the visual map, that gives us a different perspective and allows us to piece the puzzel together. Do certain industries have greater influence in certain US states? Which states have had the most IPO's since 1996? How does that line up with each states' major industrial players?
+Other characteristics include IPO date and IPO origin state.
 
-different characteristics of IPOs and determine whether there are more similar characteristics found in this group of IPOs, which could be helpful to determine if a company has a higher prbability of becoming an IPO. Such characteristics being observed include year the compnay went public, the sector of the company, where the company is mainly located, as well as its current stock trends.
+Broadly, those were our questions of interest. On a finer level, we decided to include a line graph on the various different companies to observe their performance in terms of profitability. Examining a stock's high and low prices through its subsequent 261 days of being listed on the public market should provide some useful insight, Namely, is there any telling in what makes a public company successful in the long run? 
 
 
 # Data
@@ -83,7 +85,7 @@ ggplot(final_data, aes(map_id = state_fullname)) +
 ## Shiny App
 
 <iframe height="600" width="100%" frameborder="no" title="Analysis" src="https://zostrow.shinyapps.io/Blog-MoneyMovers/"> </iframe>
-
+ 
 # Conclusion
 
 # Limitations
