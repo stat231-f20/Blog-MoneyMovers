@@ -151,11 +151,11 @@ ui <- fluidPage(
     
     sidebarPanel(
       selectInput(inputId = "hist", 
-                  label = "Choose a Category Variable of Interest:", 
+                  label = "Choose a Category Variable of Interest: (For Bar Graph)", 
                   choices = categories, 
                   selected = "Sector"),
       selectInput(inputId = "div"
-                  , label = "Include Sectors:"
+                  , label = "Include Sectors: (For Bar Graph)"
                   , choices = c("All", div_choices)
                   , selected = "All"),
       selectInput(inputId = "line"
@@ -168,8 +168,7 @@ ui <- fluidPage(
     mainPanel(
       tabsetPanel(type = "tabs",
                   tabPanel("Bar Graph", plotOutput(outputId = "barG")),
-                  tabPanel("Stock Trends", plotOutput(outputId = "Line")),
-                  tabPanel("SpatialMap", tableOutput(outputId = "Map"))))
+                  tabPanel("Stock Trends", plotOutput(outputId = "Line"))))
   )
 )
 
