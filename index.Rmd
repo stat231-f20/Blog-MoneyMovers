@@ -65,8 +65,39 @@ You should test out updating your GitHub Pages website:
 
 You can embed code as normal, for example:
 
-```{r cars}
-summary(cars)
+```{r, echo=FALSE}
+IPO <- read_csv("IPOList.csv")
+
+usa_states <- map_data(map = "state", region = ".") 
+
+counted_stocks <- IPO %>%
+  group_by(stateCountry)%>%
+  summarise(tot_stocks = length(unique(Symbol)))
+
+key <- data.frame(
+  state_abbrev = c("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"),
+  
+  state_fullname = c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
+  
+)
+view(key)
+
+Joined_data <- left_join(counted_stocks, key, by = c("stateCountry" = "state_abbrev"))
+view(Joined_data)
+
+final_data <- Joined_data %>%
+  mutate(state_fullname = tolower(state_fullname)) %>%
+  left_join(usa_states, by = c("state_fullname" = "region"))
+
+view(final_data)
+
+
+ggplot(final_data, aes(map_id = state_fullname)) +
+  geom_map(aes(fill = tot_stocks), map = usa_states) +
+  expand_limits(x = usa_states$long, y = usa_states$lat) + 
+  theme_void() +
+  coord_fixed(ratio = 1.3) +
+  labs(fill = "Number of IPOs by US State")
 ```
 
 Let's clean up the format of that output:
