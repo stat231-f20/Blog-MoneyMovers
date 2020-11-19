@@ -63,7 +63,7 @@ You should test out updating your GitHub Pages website:
 
 ## Map of the Distribution of Location of IPOs
 
-You can embed code as normal, for example:
+The map below illustrates the how the location of the thousands of IPOs in the dataset is distributed throughout the United States. The most common locations seem to be California, New York, and Texas.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 IPO <- read_csv("IPOList.csv")
@@ -80,16 +80,11 @@ key <- data.frame(
   state_fullname = c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
   
 )
-view(key)
 
-Joined_data <- left_join(counted_stocks, key, by = c("stateCountry" = "state_abbrev"))
-view(Joined_data)
-
-final_data <- Joined_data %>%
+final_data <- left_join(counted_stocks, key, by = c("stateCountry" = "state_abbrev"))%>%
   mutate(state_fullname = tolower(state_fullname)) %>%
   left_join(usa_states, by = c("state_fullname" = "region"))
 
-view(final_data)
 
 
 ggplot(final_data, aes(map_id = state_fullname)) +
