@@ -99,3 +99,11 @@ In regards to the stocks, it is difficult to find a trend between the random sam
 # Limitations
 
 As with any experiment, we ran into twists and turns that we have to adjust accordingly for. Firstly, the Kaggle dataset includes only the IPOs from the 1996-2018; the data may be a bit outdated as we approach the New Years 2021. This is why we decided to include the line graph of current stocks to more accurately depict recent stock information. Another limitation that we ran into was wrangling the dataset. We had trouble deciding what to include and exclude in terms of variables; we predicted that it would be difficult or useless to explain/draw conclusions based on columns like "CEO presence" or balance sheet items like "Amoritization and Depreciation" or Accounts Receivables". Though the above balance sheet items may tell us a little bit about the company's flexibility in cash flows and profitability, we settled on broader topics that had more consistent patterns associated.
+
+# Works Cited
+
+- Stocks IPO Information & Results, Kaggle, 2018, www.kaggle.com/ 
+     proselotis/financial-ipo-data. Accessed 18 Nov. 2020.
+- Yahoo Finance. Verizon Media, 2020, finance.yahoo.com. Accessed 18 Nov. 2020. 
+- Going Public Image GreenBiz, 2019, www.greenbiz.com/article/ 
+     esg-performance-also-matters-pre-ipo-companies. Accessed 18 Nov. 2020. 
